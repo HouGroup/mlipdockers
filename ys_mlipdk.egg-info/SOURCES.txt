@@ -1,7 +1,0 @@
-README.md
-setup.py
-ys_mlipdk.egg-info/PKG-INFO
-ys_mlipdk.egg-info/SOURCES.txt
-ys_mlipdk.egg-info/dependency_links.txt
-ys_mlipdk.egg-info/requires.txt
-ys_mlipdk.egg-info/top_level.txt

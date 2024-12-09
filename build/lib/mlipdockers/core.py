@@ -1,5 +1,5 @@
 from pymatgen.core.structure import Structure
-from ys_mlipdk.dkreq import DockerSocket
+from mlipdockers.dkreq import DockerSocket
 import json
 
 def image(inm):
