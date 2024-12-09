@@ -1,1 +1,1 @@
-Install: `pip install .`
+Install: `pip install mlipdockers`
