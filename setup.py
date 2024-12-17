@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="mlipdockers",
-    version="0.0.2",
+    version="0.0.5",
     author="Yaoshu Xie",
     author_email="jasonxie@sz.tsinghua.edu.cn",
     description="Request to docker containers in which the python enviroments for different machine learning potential usages are implemented. Using this package, one can get the predicted potential energy for any structure using any MLIP without needing to change python environments.",
@@ -15,7 +15,7 @@ setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
-    python_requires=">=3.12",
+    python_requires=">=3.10",
     install_requires=[
         "docker",
         
