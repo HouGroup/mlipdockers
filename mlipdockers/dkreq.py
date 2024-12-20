@@ -56,9 +56,14 @@ def image(inm):
         print('default settings')
         print({})
         return f'{rp}/grace-2l:0.0.1', {}
-        
+    
+    elif inm == 'eqv2':
+        print('default settings')
+        print({})
+        return f'{rp}/eqv2:0.0.1', {}
+    
     else:
-        raise ValueError('only for mace, orb-models, sevenn, chgnet or grace-2l')
+        raise ValueError('only for mace, orb-models, sevenn, chgnet, grace-2l or eqv2')
 
 class DockerSocket:
     """
@@ -82,7 +87,7 @@ class DockerSocket:
             cpu_quota=ncore * 100000,  # 限制为 12 个 CPU 核心
             cpu_period=100000
         )
-        timeout = timeout
+        self.timeout = timeout
         start_time = time.time()
         print(f'{image_name} container initializing...')
         
@@ -111,7 +116,7 @@ class DockerSocket:
         
     def request(self, dinput):
         try:
-            response = requests.post(self.url, json = dinput, timeout = 60)
+            response = requests.post(self.url, json = dinput, timeout = self.timeout)
             if response.status_code == 200:
                 return response.json()
             else:

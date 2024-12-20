@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: mlipdockers
-Version: 0.0.5
+Version: 0.0.6
 Summary: Request to docker containers in which the python enviroments for different machine learning potential usages are implemented. Using this package, one can get the predicted potential energy for any structure using any MLIP without needing to change python environments.
 Home-page: https://github.com/HouGroup/ys_mlipdk/
 Author: Yaoshu Xie
