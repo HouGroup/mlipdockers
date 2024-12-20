@@ -1,23 +1,34 @@
 from flask import Flask, request, jsonify
 from pymatgen.core.structure import Structure
 from chgnet.model.model import CHGNet
-import time
-
+from chgnet.model import StructOptimizer
+from ase.filters import FrechetCellFilter
+from ase.constraints import FixAtoms
 
 app = Flask(__name__)
-start_time = time.time()
 @app.route("/predict", methods=["POST"])
-def predict_energy():
-    if "chgnet" not in globals():
-        global chgnet
-        print("Loading CHGNet model...")
-        chgnet = CHGNet.load(use_device = request.json['device'])
-        print(f"CHGNet model loaded in {time.time() - start_time:.2f} seconds.")
-
+def mlip_calculate():
     try:
-        structure = Structure.from_dict(request.json['structure'])
-        # 返回预测的能量
-        return jsonify({"energy": float(chgnet.predict_structure(structure)['e'])})
+        if "chgnet" not in globals():
+            global chgnet
+            chgnet = CHGNet.load(use_device = request.json['device'])
+        
+        if request.json['job'] == 'predict_energy':
+            structure = Structure.from_dict(request.json['structure'])
+            # 返回预测的能量
+            return jsonify({"energy": float(chgnet.predict_structure(structure)['e'])})
+        
+        elif request.json['job'] == 'optimize':
+            atoms = Structure.from_dict(request.json['structure']).to_ase_atoms()
+            ft = FrechetCellFilter(atoms, request.json['opt_info']['fix_cell_booleans'])
+            relaxer = StructOptimizer()
+            result = relaxer.relax(atoms = atoms,
+                                   fmax = request.json['opt_info']['fmax'],
+                                   steps = request.json['opt_info']['steps'],
+                                   relax_cell = True,
+                                   ase_filter = ft,
+                                   )["final_structure"]
+            return jsonify({"structure":result.to_json(), "energy":float(chgnet.predict_structure(result)['e'])})
 
     except Exception as e:
         return jsonify({"error": str(e)}), 400
