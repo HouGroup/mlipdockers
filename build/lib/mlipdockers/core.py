@@ -41,11 +41,24 @@ class MlipCalc:
             kwargs["steps"] = int(1e5)
         if "optimizer" not in kwargs:
             kwargs["optimizer"] = 'BFGS'
+        
+        try:
+            _ = len(structure.fline_ids)
+        except:
+            structure.fline_ids = []
+        
+        try:
+            _ = len(structure.fatom_ids)
+        except:
+            structure.fatom_ids = []
+        
         self.dinput = {'opt_info': {#"fix_atom_ids":kwargs["fix_atom_ids"],
                                     "fix_cell_booleans":kwargs["fix_cell_booleans"],
                                     "fmax":kwargs["fmax"],
                                     "steps":kwargs["steps"],
-                                    "optimizer":kwargs["optimizer"]
+                                    "optimizer":kwargs["optimizer"],
+                                    "fline_ids":structure.fline_ids,
+                                    "fatom_ids":structure.fatom_ids
                                     }
                                     }
         self.dinput['job'] = 'optimize'
@@ -55,7 +68,11 @@ class MlipCalc:
             #print(self.dkskt.request(self.dinput))
             return Structure.from_dict(json.loads(r['structure'])), r['energy'] * len(structure)
         else:
-            return Structure.from_dict(json.loads(r['structure'])), r['energy']
+            if r != None:
+                return Structure.from_dict(json.loads(r['structure'])), r['energy']
+            else:
+                return structure, self.calculate(structure)
+
         
     def calculate(self, structure):
         """
