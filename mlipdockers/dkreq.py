@@ -112,6 +112,7 @@ class DockerSocket:
         
         print('Performing initialization calculation ...')
         response = requests.post(self.url, json = dft_dinput, timeout = timeout)
+        print(response)
         print('Completed !')
         
     def request(self, dinput):
